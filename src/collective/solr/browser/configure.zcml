@@ -71,6 +71,14 @@
       template="search.pt"
       layer=".interfaces.IThemeSpecific"
       zcml:condition="have plone-5"
+    />
+
+  <browser:page
+      name="search-poc"
+      class=".poc.PocSearch"
+      permission="zope2.View"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      template="search.pt"
       />
 
   <!-- Plone 4.3 -->
