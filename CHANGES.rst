@@ -4,7 +4,8 @@ Changelog
 9.0.0a2 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Allow search accross multiple SolR cores sharing the same schema by using `core` parameter
+  [mpeeters]
 
 
 9.0.0a1 (2021-11-19)

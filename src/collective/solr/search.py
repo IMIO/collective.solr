@@ -110,6 +110,9 @@ class Search(object):
             field = schema.get(index, None)
             if field is None or not field.stored:
                 logger.warning('sorting on non-stored attribute "%s"', index)
+        if "core" in parameters.keys():
+            core = parameters.pop("core")
+            connection.solrBase = "/solr/{0}".format(core)
         response = connection.search(q=query, **parameters)
         results = SolrResponse(response)
         response.close()
