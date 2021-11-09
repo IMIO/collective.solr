@@ -33,4 +33,11 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
+  <genericsetup:importStep
+      name="collective.solr-postInstall"
+      title="collective.solr post_install import step"
+      description="Post install import step for collective.solr"
+      handler=".setuphandlers.post_install">
+  </genericsetup:importStep>
+
 </configure>

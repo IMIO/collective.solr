@@ -42,6 +42,7 @@ from collective.solr.utils import getConfig
 from collective.solr.utils import translation_map
 
 from logging import getLogger
+import base64
 import six
 
 logger = getLogger(__name__)
@@ -55,6 +56,8 @@ class SolrConnection:
         persistent=True,
         postHeaders={},
         timeout=None,
+        login=None,
+        password=None,
     ):
         self.host = host
         self.solrBase = str(solrBase)
@@ -66,14 +69,23 @@ class SolrConnection:
         # a real connection to the server is not opened at this point.
         self.conn = six.moves.http_client.HTTPConnection(self.host, timeout=timeout)
         # self.conn.set_debuglevel(1000000)
+        self.auth_headers = {}
+        if login and password:
+            credentials = "{0}:{1}".format(login, password)
+            authorization = base64.b64encode(credentials.encode("ascii"))
+            self.auth_headers["Authorization"] = "Basic {0}".format(
+                authorization.decode("ascii")
+            )
+        postHeaders.update(self.auth_headers)
         self.xmlbody = []
         self.xmlheaders = {"Content-Type": "text/xml; charset=utf-8"}
         self.xmlheaders.update(postHeaders)
         if not self.persistent:
             self.xmlheaders["Connection"] = "close"
         self.formheaders = {
-            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
         }
+        self.formheaders.update(self.auth_headers)
         if not self.persistent:
             self.formheaders["Connection"] = "close"
 
@@ -336,7 +348,9 @@ class SolrConnection:
         # schema_url = '%s/admin/file/?file=managed-schema'
         logger.debug("getting schema from: %s", schema_url % self.solrBase)
         try:
-            self.conn.request("GET", schema_url % self.solrBase)
+            self.conn.request(
+                "GET", schema_url % self.solrBase, headers=self.auth_headers
+            )
             response = self.conn.getresponse()
         except (
             socket.error,

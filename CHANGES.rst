@@ -4,6 +4,9 @@ Changelog
 9.0.0a2 (unreleased)
 --------------------
 
+- Add a feature to handle SolR basic authentication
+  [mpeeters]
+
 - Allow search accross multiple SolR cores sharing the same schema by using `core` parameter
   [mpeeters]
 
