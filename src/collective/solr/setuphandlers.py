@@ -11,7 +11,6 @@ from zope.component import getUtility
 from zope.component import queryUtility
 
 import logging
-import os
 
 
 logger = logging.getLogger("collective.solr")
