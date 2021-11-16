@@ -34,10 +34,14 @@ class SolrConnectionManager(object):
     """a thread-local connection manager for solr"""
 
     lock = False
+    core = None
 
     def __init__(self, active=None):
         if isinstance(active, bool):
             self.setHost(active=active)
+
+    def setCore(self, core):
+        self.core = core
 
     def setHost(self, active=False, host="localhost", port=8983, base="/solr/plone"):
         """set connection parameters"""
@@ -48,21 +52,33 @@ class SolrConnectionManager(object):
         config.base = six.text_type(base)
         self.closeConnection(clearSchema=True)
 
+    @property
+    def connection_key(self):
+        if self.core:
+            return "connection_{0}".format(self.core)
+        return "connection"
+
+    @property
+    def schema_key(self):
+        if self.core:
+            return "schema_{0}".format(self.core)
+        return "schema"
+
     def closeConnection(self, clearSchema=False):
         """close the current connection, if any"""
         logger.debug("closing connection")
-        conn = getLocal("connection")
+        conn = getLocal(self.connection_key)
         if conn is not None:
             conn.close()
-            setLocal("connection", None)
+            setLocal(self.connection_key, None)
         if clearSchema:
-            setLocal("schema", None)
+            setLocal(self.schema_key, None)
 
     def getConnection(self):
         """returns an existing connection or opens one"""
         if not isActive():
             return None
-        conn = getLocal("connection")
+        conn = getLocal(self.connection_key)
         if conn is not None:
             return conn
 
@@ -81,7 +97,7 @@ class SolrConnectionManager(object):
                 login=config_login,
                 password=config_password,
             )
-            setLocal("connection", conn)
+            setLocal(self.connection_key, conn)
         elif config_host is not None:
             # otherwise use connection parameters defined in control panel...
             config_port = registry["collective.solr.port"]
@@ -95,12 +111,14 @@ class SolrConnectionManager(object):
                 login=config_login,
                 password=config_password,
             )
-            setLocal("connection", conn)
+            setLocal(self.connection_key, conn)
+        if self.core:  # Adapt core if it is necessary
+            conn.solrBase = "/".join(conn.solrBase.split("/")[:-1] + [self.core])
         return conn
 
     def getSchema(self):
         """returns the currently used schema or fetches it"""
-        schema = getLocal("schema")
+        schema = getLocal(self.schema_key)
         if schema is None:
             conn = self.getConnection()
             if conn is not None:
@@ -108,7 +126,7 @@ class SolrConnectionManager(object):
                 self.setSearchTimeout()
                 try:
                     schema = conn.get_schema()
-                    setLocal("schema", schema)
+                    setLocal(self.schema_key, schema)
                 except (error, CannotSendRequest, ResponseNotReady):
                     logger.exception("exception while getting schema")
         return schema

@@ -41,9 +41,10 @@ class Search(object):
         self.manager = None
         self.config = None
 
-    def getManager(self):
+    def getManager(self, core=None):
         if self.manager is None:
             self.manager = queryUtility(ISolrConnectionManager)
+            self.manager.setCore(core)
         return self.manager
 
     def getConfig(self):
@@ -62,8 +63,9 @@ class Search(object):
     ):
         """perform a search with the given querystring and parameters"""
         start = time()
+        core = parameters.pop("core", None) or None
         config = self.getConfig()
-        manager = self.getManager()
+        manager = self.getManager(core=core)
         manager.setSearchTimeout()
         connection = manager.getConnection()
         if connection is None:
@@ -110,9 +112,6 @@ class Search(object):
             field = schema.get(index, None)
             if field is None or not field.stored:
                 logger.warning('sorting on non-stored attribute "%s"', index)
-        if "core" in parameters.keys():
-            core = parameters.pop("core")
-            connection.solrBase = "/solr/{0}".format(core)
         response = connection.search(q=query, **parameters)
         results = SolrResponse(response)
         response.close()
@@ -134,7 +133,8 @@ class Search(object):
 
     def buildQueryAndParameters(self, default=None, **args):
         """helper to build a querystring for simple use-cases"""
-        schema = self.getManager().getSchema() or {}
+        core = args.pop("core", None) or None
+        schema = self.getManager(core=core).getSchema() or {}
 
         params = subtractQueryParameters(args)
         params = cleanupQueryParameters(params, schema)
@@ -145,7 +145,7 @@ class Search(object):
         mangleQuery(args, config, schema)
 
         logger.debug('building query for "%r", %r', default, args)
-        schema = self.getManager().getSchema() or {}
+        schema = self.getManager(core=core).getSchema() or {}
         # no default search field in Solr 7
         defaultSearchField = getattr(schema, "defaultSearchField", "SearchableText")
         args[None] = default
