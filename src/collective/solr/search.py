@@ -42,8 +42,9 @@ class Search(object):
         self.config = None
 
     def getManager(self, core=None):
-        if self.manager is None:
-            self.manager = queryUtility(ISolrConnectionManager)
+        if self.manager is None or self.manager.core != core:
+            name = core is not None and core or ""
+            self.manager = queryUtility(ISolrConnectionManager, name=name)
             self.manager.setCore(core)
         return self.manager
 
