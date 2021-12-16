@@ -360,7 +360,9 @@ class SolrConnection:
         ):
             # see `doPost` method for more info about these exceptions
             self.__reconnect()
-            self.conn.request("GET", schema_url % self.solrBase)
+            self.conn.request(
+                "GET", schema_url % self.solrBase, headers=self.auth_headers
+            )
             response = self.conn.getresponse()
 
         if response.status == 200:
