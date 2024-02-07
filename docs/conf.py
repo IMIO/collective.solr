@@ -40,8 +40,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"collective.solr"
-copyright = u"2015, Plone Foundation"
+project = "collective.solr"
+copyright = "2015, Plone Foundation"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -184,8 +184,8 @@ latex_documents = [
     (
         "index",
         "collectivesolr.tex",
-        u"collective.solr Documentation",
-        u"Plone Foundation",
+        "collective.solr Documentation",
+        "Plone Foundation",
         "manual",
     )
 ]
@@ -219,8 +219,8 @@ man_pages = [
     (
         "index",
         "collectivesolr",
-        u"collective.solr Documentation",
-        [u"Plone Foundation"],
+        "collective.solr Documentation",
+        ["Plone Foundation"],
         1,
     )
 ]
@@ -238,8 +238,8 @@ texinfo_documents = [
     (
         "index",
         "collectivesolr",
-        u"collective.solr Documentation",
-        u"Plone Foundation",
+        "collective.solr Documentation",
+        "Plone Foundation",
         "collectivesolr",
         "One line description of project.",
         "Miscellaneous",

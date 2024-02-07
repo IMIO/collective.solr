@@ -132,7 +132,7 @@ def isSimpleSearch(term):
                 new_parts.append(parts[i])
             else:
                 new_parts.append("quoted")
-        term = u"".join(new_parts)
+        term = "".join(new_parts)
     if bool(operators.match(term)):
         return False
     if bool(simpleCharacters.match(term)):
