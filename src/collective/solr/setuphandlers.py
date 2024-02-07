@@ -130,7 +130,7 @@ def migrate_to_7(context):
     logger.info("Migrated to version 7")
 
 
-def migrate_to_8(context):
+def migrate_to_9(context):
     registry = getUtility(IRegistry)
     if "collective.solr.https_connection" not in registry.records:
         registry_field = field.Bool(title=u"Use HTTPS connection")
