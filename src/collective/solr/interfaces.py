@@ -1,4 +1,4 @@
-from Products.CMFCore.interfaces import IIndexQueueProcessor
+from collective.indexing.interfaces import IIndexQueueProcessor
 from zope.interface import Interface
 from zope.schema import Bool, Float, Int, List, Password, Text, TextLine
 from zope.schema.interfaces import IVocabularyFactory
@@ -7,7 +7,7 @@ from collective.solr import SolrMessageFactory as _
 
 
 # If we send too large a number to solr, it can't parse it
-MAX_RESULTS_SUPPORTED_BY_SOLR = 1_000_000_000
+MAX_RESULTS_SUPPORTED_BY_SOLR = 1000000000
 
 
 class ISolrSchema(Interface):
@@ -124,7 +124,7 @@ class ISolrSchema(Interface):
             "ridiculously large value that is higher than the "
             "possible number of rows that are expected.",
         ),
-        default=1_000_000,
+        default=1000000,
         max=MAX_RESULTS_SUPPORTED_BY_SOLR,
     )
 
@@ -292,7 +292,7 @@ class ISolrSchema(Interface):
             "help_highlight_formatter_pre",
             default="The text to insert before the highlighted keyword.",
         ),
-        default="[",
+        default=u"[",
         required=False,
     )
 
@@ -302,7 +302,7 @@ class ISolrSchema(Interface):
             "help_highlight_formatter_post",
             default="The text to insert after the highlighted keyword.",
         ),
-        default="]",
+        default=u"]",
         required=False,
     )
 
@@ -365,8 +365,8 @@ class ISolrSchema(Interface):
             "label_boost_script", default="Python script for custom index boosting"
         ),
         required=False,
-        default="",
-        missing_value="",
+        default=u"",
+        missing_value=u"",
         description=_(
             "help_boost_script",
             default="This script is meant to be customized according to "
@@ -402,7 +402,7 @@ class ISolrSchema(Interface):
             "help_tika_default_field",
             default="Field that Tika uses to add the extracted text to.",
         ),
-        default="content",
+        default=u"content",
         required=False,
     )
 
@@ -422,7 +422,7 @@ class ISolrSchema(Interface):
             "faulty (stopword*) parts removed from "
             "the expression ",
         ),
-        default="",
+        default=u"",
         required=False,
     )
 

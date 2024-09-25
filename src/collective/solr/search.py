@@ -62,7 +62,7 @@ class Search(object):
         sow="true",
         lowercase_operator="true",
         default_operator="AND",
-        **parameters,
+        **parameters
     ):
         """perform a search with the given querystring and parameters"""
         start = time()
@@ -78,19 +78,19 @@ class Search(object):
         parameters["lowercaseOperators"] = lowercase_operator
         parameters["q.op"] = default_operator
         if "rows" not in parameters:
-            parameters["rows"] = config.max_results or 10_000_000
+            parameters["rows"] = config.max_results or 10000000
             # Check if rows param is 0 for backwards compatibility. Before
             # Solr 4 'rows = 0' meant that there is no limitation. Solr 4
             # always expects a rows param > 0 though:
             # http://wiki.apache.org/solr/CommonQueryParameters#rows
             if parameters["rows"] == 0:
-                parameters["rows"] = 10_000_000
+                parameters["rows"] = 10000000
             logger.debug(
                 'falling back to "max_results" (%d) without a "rows" '
                 "parameter: %r (%r)",
                 config.max_results,
                 query,
-                parameters,
+                parameters
             )
         else:
             try:
