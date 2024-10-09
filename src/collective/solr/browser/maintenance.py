@@ -19,6 +19,9 @@ from Products.Five.browser import BrowserView
 from zope.component import queryAdapter, queryUtility
 from zope.interface import implementer
 
+import os
+import sys
+
 logger = getLogger("collective.solr.maintenance")
 
 
@@ -69,6 +72,11 @@ def notimeout(func):
 @implementer(ISolrMaintenanceView)
 class SolrMaintenanceView(BrowserView):
     """helper view for indexing all portal content in Solr"""
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+        self.batch_value = int(os.getenv("BATCH", "0"))
 
     def mklog(self, use_std_log=False):
         """helper to prepend a time stamp to the output"""
@@ -284,6 +292,10 @@ class SolrMaintenanceView(BrowserView):
             logger.info(msg)
             flush()
             zodb_conn.cacheGC()
+            if self.batch_value and processed >= self.batch_value:
+                logger.info("EXITED following BATCH env value {}".format(self.batch_value))
+                conn.commit()
+                sys.exit(0)
 
         cpi = checkpointIterator(checkPoint, batch)
         # Look up objects
