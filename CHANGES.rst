@@ -1,10 +1,44 @@
 Changelog
 =========
 
-9.1.5 (unreleased)
+9.3.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix creating a fresh site in Plone 6.1 when registry does not exist yet. Fixes #378 [pbauer]
+
+9.3.0 (2024-02-15)
+------------------
+
+- Add support of https connections
+  [remdub]
+
+- Add french locales
+  [remdub]
+
+
+9.2.3 (2024-02-07)
+------------------
+
+- Add upgrade step for missing stopwords registry entries
+  [remdub]
+
+
+9.2.2 (2024-02-06)
+------------------
+
+- Allow leading spaces in the stopwords configuration [reebalazs]
+
+
+9.2.1 (2024-02-01)
+------------------
+
+- Fix indexing of null values [reebalazs]
+
+
+9.2.0 (2024-01-31)
+------------------
+
+- Prevent wildcard expressions for stopwords in simple expressions [reebalazs]
 
 
 9.1.4 (2023-06-09)

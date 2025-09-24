@@ -2,13 +2,13 @@ import sys
 
 from setuptools import find_packages, setup
 
-version = "9.1.5.dev0"
+version = "9.3.1.dev0"
 
-assert sys.version_info >= (
-    3,
-    6,
-    0,
-), "collective.solr 9 requires Python 3.8.0+. Please downgrade to collective.solr 8 for Python 2 and Plone 4.3/5.1."
+# assert sys.version_info >= (
+#     3,
+#     6,
+#     0,
+# ), "collective.solr 9 requires Python 3.8.0+. Please downgrade to collective.solr 8 for Python 2 and Plone 4.3/5.1."
 
 
 long_description = "\n\n".join([open("README.rst").read(), open("CHANGES.rst").read()])
