@@ -9,20 +9,20 @@ class ISolrConnectionConfigDirective(Interface):
     """Directive which registers a Solr connection config"""
 
     host = schema.ASCIILine(
-        title="Host",
-        description="The host name of the Solr instance to be used.",
+        title=u"Host",
+        description=u"The host name of the Solr instance to be used.",
         required=True,
     )
 
     port = schema.Int(
-        title="Port",
-        description="The port of the Solr instance to be used.",
+        title=u"Port",
+        description=u"The port of the Solr instance to be used.",
         required=True,
     )
 
     base = schema.ASCIILine(
-        title="Base",
-        description="The base prefix of the Solr instance to be used.",
+        title=u"Base",
+        description=u"The base prefix of the Solr instance to be used.",
         required=True,
     )
 
