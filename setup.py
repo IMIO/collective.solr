@@ -2,7 +2,7 @@ import sys
 
 from setuptools import find_packages, setup
 
-version = "9.3.1.dev0"
+version = "9.4.1.dev0"
 
 # assert sys.version_info >= (
 #     3,
@@ -24,6 +24,7 @@ setup(
         "Framework :: Plone",
         "Framework :: Plone :: 5.2",
         "Framework :: Plone :: 6.0",
+        "Framework :: Plone :: 6.1",
         "Framework :: Plone :: Addon",
         "Intended Audience :: Developers",
         "Intended Audience :: System Administrators",
@@ -35,6 +36,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
     ],
     keywords="plone cmf zope indexing searching solr lucene",
     author="Plone Community",

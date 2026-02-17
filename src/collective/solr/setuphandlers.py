@@ -1,11 +1,16 @@
-import logging
-
-from collective.solr.interfaces import ISolrConnectionConfig, ISolrSchema
+from collective.solr.interfaces import ISolrConnectionConfig
+from collective.solr.interfaces import ISolrSchema
 from plone import api
-from plone.registry import Record, field
+from plone.registry import field
+from plone.registry import Record
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from zope.component import getSiteManager, getUtility, queryUtility
+from zope.component import getSiteManager
+from zope.component import getUtility
+from zope.component import queryUtility
+
+import logging
+
 
 logger = logging.getLogger("collective.solr")
 PROFILE_ID = "profile-collective.solr:default"
@@ -54,6 +59,8 @@ def migrateTo4(context):
         if type_id not in pt.objectIds():
             continue
         fti = pt[type_id]
+        if not hasattr(fti, 'behaviors'):
+            continue
         if new_behavior not in fti.behaviors:
             fti.behaviors += (new_behavior,)
             logger.info("Added new behavior to {}".format(type_id))

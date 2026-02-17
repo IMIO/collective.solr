@@ -6,10 +6,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.9", "3.8"]
+        python-version: ["3.11", "3.10", "3.9", "3.8"]
         plone-version: ["5.2", "6.0"]
-        solr-version: ["7.7.x", "8.11.x", "9.0.x", "9.1.x"]
+        solr-version: ["9.0.x", "9.1.x", "9.5.x"]
         exclude:
+          - python-version: "3.11"
+            plone-version: "5.2"
           - python-version: "3.10"
             plone-version: "5.2"
           - python-version: "3.9"
@@ -18,11 +20,11 @@ jobs:
             plone-version: "5.2"
     steps:
       # git checkout
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
 
       # python setup
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -54,7 +56,7 @@ jobs:
 
       # buildout
       - name: buildout
-        run: buildout -t 10 -c buildout.cfg
+        run: buildout -t 10 -c buildout.cfg install test solr
         env:
           CI: true
 
